@@ -1,8 +1,8 @@
-import { Booking } from "../../domain/entities/booking";
+import { CreateBookingDTO } from "../../application/dtos/create_booking_dto";
 import { BookingService } from "../../application/services/booking_service";
 import { PropertyService } from "../../application/services/property_service";
 import { UserService } from "../../application/services/user_service";
-import { CreateBookingDTO } from "../../application/dtos/create_booking_dto";
+import { Booking } from "../../domain/entities/booking";
 import { FakeBookingRepository } from "../../infrastructure/repositories/fake_booking_repository";
 
 jest.mock("./property_service");
@@ -189,6 +189,13 @@ describe("BookingService", () => {
     const bookingId = "invalid-id";
 
     await expect(bookingService.cancelBooking(bookingId)).rejects.toThrow(
+      "Reserva não encontrada."
+    );
+  });
+
+  it("deve retornar erro ao tentar cancelar uma reserva que não existe", async () => {
+    const nonExistingId = "id-inexistente";
+    await expect(bookingService.cancelBooking(nonExistingId)).rejects.toThrow(
       "Reserva não encontrada."
     );
   });
